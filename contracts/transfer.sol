@@ -12,9 +12,7 @@ contract transfer{
         addr.transfer(value);
     }
 
-    function BuffContract() public payable {
-
-    }
+    receive() external payable { }
 
     function balanceOfContract () public view returns(uint256){
         return address(this).balance;
