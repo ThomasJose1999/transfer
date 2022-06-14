@@ -41,6 +41,24 @@ describe("Transfer Contract", function () {
 
     });
 
+    it("should revert if the contract doest have enough balance", async() =>{
+      let contractBal = parseInt(await transfer.balanceOfContract())
+      expect(contractBal).to.equal(0);
+      await expect(transfer.sendMoney(addr2.address, 100)).to.be.revertedWith("contract doesn't have enough balance");
+    });
+
+    it("should revert if the contract is sending money to non existing account", async ()=>{
+      await addr1.sendTransaction({
+        to: transfer.address,
+        value: ethers.utils.parseEther("10.0"),
+        
+      });
+      let contractBal =  parseInt(await transfer.balanceOfContract());
+      expect(contractBal).to.equal(parseInt(ethers.utils.parseEther("10.0")));
+      console.log(await expect(transfer.sendMoney("0x617F2E2fD72FD9D5503", 100)).to.be.reverted);
+
+    });
+
 
   });
 
